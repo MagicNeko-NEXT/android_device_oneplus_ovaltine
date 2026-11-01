@@ -5,4 +5,4 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/lineage_ovaltine.mk
+    $(LOCAL_DIR)/custom_ovaltine.mk
