@@ -79,7 +79,7 @@ public class MainActivity extends Activity {
         header.setPadding(pad, pad, pad, pad / 2);
 
         TextView title = new TextView(this);
-        title.setText("Vulkan 驱动切换");
+        title.setText("Vulkan driver switch");
         title.setTextSize(20);
         header.addView(title);
 
@@ -93,19 +93,19 @@ public class MainActivity extends Activity {
         header.addView(mGlobalButton);
 
         Button reset = new Button(this);
-        reset.setText("清空全部配置");
+        reset.setText("Clear all settings");
         reset.setOnClickListener(v -> {
             mConf.clear();
             if (saveConf()) {
                 rebuild();
-                toast("已清空，所有应用回到默认驱动");
+                toast("Cleared, all apps are back on the default driver");
             }
         });
         header.addView(reset);
 
         TextView hint = new TextView(this);
         hint.setTextSize(12);
-        hint.setText("下面是已安装的应用。点一下选驱动；改完要强制停止目标应用才生效。");
+        hint.setText("Installed apps are listed below. Tap one to pick a driver; force stop the app for the change to take effect.");
         hint.setPadding(0, pad / 2, 0, pad / 2);
         header.addView(hint);
 
@@ -177,7 +177,7 @@ public class MainActivity extends Activity {
     private boolean saveConf() {
         File dir = new File(CONF_DIR);
         if (!dir.exists() && !dir.mkdirs()) {
-            toast("无法创建 " + CONF_DIR);
+            toast("Unable to create " + CONF_DIR);
             return false;
         }
         File f = new File(CONF_PATH);
@@ -197,11 +197,11 @@ public class MainActivity extends Activity {
             w.write(sb.toString());
             w.flush();
         } catch (IOException e) {
-            toast("写入失败: " + e.getMessage());
+            toast("Write failed: " + e.getMessage());
             return false;
         }
         if (!f.setReadable(true, false)) {
-            toast("警告：设置 0644 失败，其他应用可能读不到");
+            toast("Warning: failed to set 0644, other apps may not be able to read it");
         }
         return true;
     }
@@ -233,20 +233,20 @@ public class MainActivity extends Activity {
     private void rebuild() {
         String global = mConf.get(GLOBAL);
         if (global == null) {
-            global = "未设置（默认 adreno）";
+            global = "not set (default adreno)";
         }
-        mStatus.setText("全局默认：" + global + "\n配置文件：" + CONF_PATH
-                + "\n当前配置 " + mConf.size() + " 条");
-        mGlobalButton.setText("全局默认：" + global + "（点击修改）");
+        mStatus.setText("Global default: " + global + "\nConfig file: " + CONF_PATH
+                + "\nCurrent entries: " + mConf.size());
+        mGlobalButton.setText("Global default: " + global + " (tap to change)");
         mAdapter.notifyDataSetChanged();
     }
 
     private void pickDriver(final String pkg) {
-        final String[] items = {"adreno（高通原厂）", "freedreno（Mesa Turnip）", "跟随全局默认", "取消"};
+        final String[] items = {"adreno (Qualcomm OEM)", "freedreno (Mesa Turnip)", "Follow global default", "Cancel"};
         final String current = mConf.get(pkg);
         new AlertDialog.Builder(this)
-                .setTitle(GLOBAL.equals(pkg) ? "全局默认驱动"
-                        : pkg + "\n当前：" + (current == null ? "跟随全局" : current))
+                .setTitle(GLOBAL.equals(pkg) ? "Global default driver"
+                        : pkg + "\nCurrent: " + (current == null ? "follow global" : current))
                 .setItems(items, (d, which) -> {
                     if (which == 0 || which == 1) {
                         mConf.put(pkg, DRIVERS[which]);
@@ -262,8 +262,8 @@ public class MainActivity extends Activity {
                     if (saveConf()) {
                         rebuild();
                         toast(GLOBAL.equals(pkg)
-                                ? "全局默认已更新"
-                                : pkg + " 已设置，记得强制停止它");
+                                ? "Global default updated"
+                                : pkg + " set, remember to force stop it");
                     }
                 })
                 .show();
@@ -275,7 +275,7 @@ public class MainActivity extends Activity {
             return own;
         }
         String global = mConf.get(GLOBAL);
-        return global == null ? "adreno（默认）" : global + "（全局）";
+        return global == null ? "adreno (default)" : global + " (global)";
     }
 
     /**

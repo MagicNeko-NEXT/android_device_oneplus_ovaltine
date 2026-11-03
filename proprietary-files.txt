@@ -1374,7 +1374,7 @@ vendor/etc/ltm_config_boe_rm692e5_dsc_cmd_mode_panel.xml|ca9ad48a7e0b721c59d93bf
 # Fingerprint (service) - from salami 11.F.68
 odm/bin/hw/vendor.oplus.hardware.biometrics.fingerprint@2.1-service_uff|d5eac669a4ab9a7a36de2391dc845615983d89c5|3daa029df21f02214c3dbccf55a1433e31c4a28a
 odm/etc/init/vendor.oplus.hardware.biometrics.fingerprint@2.1-service.rc|f57d94a5aff562476b573949d4901577bd9cf687
-# [t12 2026-10-05] 10T(ovaltine) + CPH2415_15.0.0.700 dump: 该文件在 700 中不存在 -> 停用
+# [t12 2026-10-05] 10T(ovaltine) + CPH2415_15.0.0.700 dump: file doesn't exist in 700 -> disabled
 odm/etc/vintf/manifest/manifest_oplus_fingerprint_aidl_v2.xml|d23fff648012a7f3fab8f8d70a61250f5396db3d
 
 # Fingerprint firmware
@@ -1586,10 +1586,10 @@ odm/etc/wifi/bdwlang.b0e;SYMLINK=odm/etc/wifi/qca6490/bdwlang.b0e|5108f99037f017
 odm/etc/wifi/bdwlang.elf;SYMLINK=odm/etc/wifi/qca6490/bdwlang.elf|41a16e62c3b5d019c583daa48bd5e2050e07dee1
 odm/etc/wifi/regdb.bin|8124305b477e74ba2117240ed101deef43fd45c4
 
-# OPlus displaypanelfeature（FOD/HBM 点亮层）—— from CPH2415_15.0.0.700 dump
-# 汐 2026-10-10：库存里整块没抓。它是 QService 的客户端 + /dev/oplus_display 的 ioctl 封装，
-# 与 FOD 点亮同一条链。**故意不带 VINTF manifest** —— 框架若去等一个起不来的服务，
-# finishBooting 的 waitForDeclaredService 会永久阻塞、system_server 被 Watchdog 杀。
+# OPlus displaypanelfeature (FOD/HBM illumination layer), from CPH2415_15.0.0.700 dump
+# Xi 2026-10-10: this whole block was missing from the list. It's a QService client + /dev/oplus_display ioctl wrapper,
+# on the same chain as FOD illumination. **Deliberately ships no VINTF manifest**: if the framework waits for a service that can't start,
+# waitForDeclaredService in finishBooting blocks forever and Watchdog kills system_server.
 odm/bin/hw/vendor.oplus.hardware.displaypanelfeature@1.0-service|df2758d60b06237968df64c6620fc2a14cb44de7
 odm/etc/init/vendor.oplus.hardware.displaypanelfeature@1.0-service.rc|ba93b29def664017fdcd0f35e0503d81543689c8
 odm/etc/permissions/vendor-oplus-hardware-displaypanelfeature.xml|96d4904e00bc5df1bf9a5c6b4a71593fd3388905

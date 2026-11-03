@@ -1,8 +1,8 @@
-#   （原行内容见 port-t5/evidence/device_oneplus_ovaltine_device.mk.before）
+#   (original line: see port-t5/evidence/device_oneplus_ovaltine_device.mk.before)
 # Copyright (C) 2021-2025 The LineageOS Project
-#   （原行内容见 port-t5/evidence/device_oneplus_ovaltine_device.mk.before）
+#   (original line: see port-t5/evidence/device_oneplus_ovaltine_device.mk.before)
 # SPDX-License-Identifier: Apache-2.0
-#   （原行内容见 port-t5/evidence/device_oneplus_ovaltine_device.mk.before）
+#   (original line: see port-t5/evidence/device_oneplus_ovaltine_device.mk.before)
 
 # AviumUI build configuration
 # This device ships with GMS. WITH_GMS requires vendor/pixel/gms,
@@ -25,9 +25,9 @@ PRODUCT_PACKAGES += \
     tri-state-key-calibrate
 
 # Audio
-# 10T(CPH2415) 的 audio XML 取自 10T 自身（旧 ovaltine 树），
-# 文件名与 10 Pro(wly) 不同：ODM 侧 mixer_paths.xml / resourcemanager.xml，
-# 且 10T 树没有 sound_trigger_*.xml（不要从 wly 抄）。
+# 10T (CPH2415) audio XML comes from the 10T itself (old ovaltine tree);
+# file names differ from the 10 Pro (wly): ODM-side mixer_paths.xml / resourcemanager.xml,
+# and the 10T tree has no sound_trigger_*.xml (don't copy from wly).
 QCV_FAMILY_SKUS := taro cape
 
 PRODUCT_COPY_FILES += \
@@ -50,32 +50,32 @@ TARGET_SCREEN_WIDTH := 1080
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/display_id_4630947180710147970.xml:$(TARGET_COPY_OUT_VENDOR)/etc/displayconfig/display_id_4630947180710147969.xml
 
-# oplus_udfps 在 qtidisplay 命名空间里声明为 bool_variables → 必须用 soong_config_set_bool
-# （wly 树用的是 soong_config_set，属字符串写法，与 bool 声明不匹配，不要照抄）
+# oplus_udfps is declared as bool_variables in the qtidisplay namespace → soong_config_set_bool is required
+# (the wly tree uses soong_config_set, the string form, which doesn't match the bool declaration; don't copy it)
 $(call soong_config_set_bool,qtidisplay,oplus_udfps,true)
-# 10T(ovaltine) 无 Pixelworks iris 硬件，不设 pxlw_vendor_namespace；
-# 否则 hardware/qcom-caf/sm8550/display 的 soong_config select 会要求 libpwirisfeature。
-#   （原行内容见 port-t5/evidence/device_oneplus_ovaltine_device.mk.before）
+# 10T (ovaltine) has no Pixelworks iris hardware, so pxlw_vendor_namespace isn't set;
+# otherwise the soong_config select in hardware/qcom-caf/sm8550/display requires libpwirisfeature.
+#   (original line: see port-t5/evidence/device_oneplus_ovaltine_device.mk.before)
 
 # Fingerprint
-# 回到 LineageOS 上游方案（sm8350/sm8450 都是这一套）：
-#   hardware/oplus/hidl/fingerprint 提供 HIDL 2.3 service，framework 侧仍有
-#   .../biometrics/sensors/fingerprint/hidl 路径（A16 未移除 HIDL 指纹支持），
-#   hardware/interfaces/biometrics/fingerprint/2.1|2.2|2.3 也都在。
+# Back to the LineageOS upstream approach (used by both sm8350 and sm8450):
+#   hardware/oplus/hidl/fingerprint provides the HIDL 2.3 service, the framework still has the
+#   .../biometrics/sensors/fingerprint/hidl path (A16 didn't remove HIDL fingerprint support),
+#   and hardware/interfaces/biometrics/fingerprint/2.1|2.2|2.3 are all present.
 #
-# avium 之前把这一行注释掉、改走自造 AIDL proxy（device/oneplus/ovaltine/
-# fingerprint），但那个 proxy 至今没打通：createSession 打到 stock HAL 上是
-# BAD_TYPE，framework 又不 catch 异常，必须靠哑 session 兜住。
+# avium previously commented this line out and used a custom AIDL proxy (device/oneplus/ovaltine/
+# fingerprint), but that proxy never worked end to end: createSession against the stock HAL gives
+# BAD_TYPE, and the framework doesn't catch the exception, so a dummy session had to absorb it.
 #
-# 关于「缺 VINTF 声明导致 SIGSEGV」那条注释：因果是反的。service 不进
-# PRODUCT_PACKAGES -> 产物里没有它 -> 它自带的 vintf_fragments 不会合并 ->
-# manifest 里自然查不到 fingerprint。启用后 vintf_fragments 会自动合并。
-# stock HAL 恢复原始版（odm 里注册 IFingerprint/default，见
+# About the "missing VINTF declaration causes SIGSEGV" comment: cause and effect are reversed. If the service isn't in
+# PRODUCT_PACKAGES -> it's not in the output -> its own vintf_fragments aren't merged ->
+# the manifest naturally has no fingerprint. Once enabled, vintf_fragments merge automatically.
+# The stock HAL is restored to the original (registers IFingerprint/default in odm, see
 # vendor/oneplus/ovaltine/proprietary/odm/etc/vintf/manifest/
-# manifest_oplus_fingerprint_aidl_v2.xml），framework 直接连它，
-# 不需要 HIDL 2.3 service，也不需要 AIDL proxy。
-# 依据：crDroidAndroid-16.0-20261012-ovaltine-v12.12-livefix.zip 里
-# fps_hal 注册 /default、没有 2.3-service 的 rc，指纹正常工作。
+# manifest_oplus_fingerprint_aidl_v2.xml), and the framework connects to it directly,
+# with no need for the HIDL 2.3 service or the AIDL proxy.
+# Evidence: in crDroidAndroid-16.0-20261012-ovaltine-v12.12-livefix.zip
+# fps_hal registers /default, there is no 2.3-service rc, and fingerprint works.
 # PRODUCT_PACKAGES += \
 #     android.hardware.biometrics.fingerprint@2.3-service.oplus
 
@@ -84,16 +84,16 @@ PRODUCT_COPY_FILES += \
 
 $(call soong_config_set,surfaceflinger,udfps_lib,//hardware/oplus:libudfps_extension.oplus)
 
-# ---- crDroid 专属参数 -------------------------------------------------------
+# ---- crDroid-specific parameters ----------------------------------------------
 # TARGET_HAS_UDFPS
-#   消费点：vendor/addons/config.mk:22 `ifeq ($(TARGET_HAS_UDFPS),true)`
+#   Used by: vendor/addons/config.mk:22 `ifeq ($(TARGET_HAS_UDFPS),true)`
 #           → PRODUCT_PACKAGES += UdfpsIcons UdfpsAnimations
-#   这是 crDroid 专属开关：LineageOS 原版没有 vendor/addons，源码里也不消费它，
-#   不设时默认「关」，屏下指纹能正常解锁，只是没有 crDroid 那套图标/动画皮肤。
-#   本机依据：10T(ovaltine) 为光学屏下指纹，overlay/OPlusFrameworksResTarget 已按
-#           persist.vendor.fingerprint.optical.sensorlocation=540::2182 配好
-#           config_udfps_sensor_props，SystemUI 压暗层与亮度表也已手调。
-#   写法对齐上游 crdroidandroid/android_device_oneplus_salami device.mk:33。
+#   This is a crDroid-only switch: stock LineageOS has no vendor/addons and nothing in the source uses it;
+#   unset defaults to off, and fingerprint still unlocks, just without crDroid's icon/animation skin.
+#   Device evidence: 10T (ovaltine) has an optical under-display sensor, overlay/OPlusFrameworksResTarget is set from
+#           persist.vendor.fingerprint.optical.sensorlocation=540::2182 for
+#           config_udfps_sensor_props, and the SystemUI dim layer and brightness table are hand-tuned.
+#   Form follows upstream crdroidandroid/android_device_oneplus_salami device.mk:33.
 TARGET_HAS_UDFPS := true
 # -----------------------------------------------------------------------------
 
@@ -249,7 +249,7 @@ PRODUCT_PACKAGES += \
 # boot-loops system_server. The PJG SensorProps shim only rewrites field values,
 # not the parcel layout, so it cannot paper over the mismatch.
 # Re-enable only once the proxy speaks V5 (freeze aidl_api/.../5 first).
-# AIDL proxy 停用：改用上游 HIDL 2.3 service 后不再需要。
-# 源码保留在 device/oneplus/ovaltine/fingerprint/ 供以后参考。
+# AIDL proxy disabled: no longer needed after moving to the upstream HIDL 2.3 service.
+# Source kept in device/oneplus/ovaltine/fingerprint/ for future reference.
 # PRODUCT_PACKAGES += \
 #     android.hardware.biometrics.fingerprint-service.proxy
