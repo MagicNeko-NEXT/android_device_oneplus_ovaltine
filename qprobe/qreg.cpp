@@ -1,4 +1,4 @@
-// 汐 2026-10-10：display.qservice 占位，对所有 transact 答成功，探测 disp_api_init 的真实需求。
+// Xi 2026-10-10: display.qservice placeholder, answers success to every transact, to probe what disp_api_init really needs.
 #include <binder/IServiceManager.h>
 #include <binder/ProcessState.h>
 #include <binder/Binder.h>
@@ -14,7 +14,7 @@ class YesBinder : public BBinder {
         fflush(stdout);
         if (reply != nullptr) {
             reply->writeInt32(0);     // status = 0 (OK)
-            reply->writeInt32(0);     // 一个通用返回值
+            reply->writeInt32(0);     // a generic return value
         }
         return NO_ERROR;
     }

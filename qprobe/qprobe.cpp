@@ -1,4 +1,4 @@
-// 汐 2026-10-10：查 display.qservice 到底注册在哪条 binder 上（带诊断）。
+// Xi 2026-10-10: finds which binder display.qservice is actually registered on (with diagnostics).
 #include <binder/IServiceManager.h>
 #include <binder/ProcessState.h>
 #include <binder/IBinder.h>
@@ -25,7 +25,7 @@ static void dump(const char* tag, const sp<IServiceManager>& sm) {
             }
         }
         if (names.size() > 0 && hits == 0) {
-            printf("[%s]   前 3 条: ", tag);
+            printf("[%s]   first 3: ", tag);
             for (size_t i = 0; i < names.size() && i < 3; i++)
                 printf("%s | ", String8(names[i]).c_str());
             printf("\n");

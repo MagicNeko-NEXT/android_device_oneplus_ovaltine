@@ -1,22 +1,22 @@
 ## All proprietary firmware files from this list are from
 ## OnePlus 10T (CPH2415_15.0.0.700(EX01)).   [source dir: /home/icecat/fw-verify/fw700/img]
 ##
-## ★ 全部 24 个分区固定死 700（pre-1301 那一代），不再跟随任何更新的代际。
-##   理由：700 是 EDL/9008「泄露证书」仍可用的最后一代。包里若混入 1301+ 的固件，
-##   刷了这台（或没换过证书的别的 CPH2415）就会把人家的后路一起弄没。
-##   ⇒ 这条策略是【保护性的】：宁可整组停在旧代，也不往前带一步。
+## ★ All 24 partitions are pinned to 700 (the pre-1301 generation) and no longer follow any newer generation.
+##   Reason: 700 is the last generation where the leaked EDL/9008 certificate still works. If 1301+ firmware gets into the package,
+##   flashing it on this phone (or any other CPH2415 whose certificate wasn't changed) removes that rescue path too.
+##   ⇒ This policy is PROTECTIVE: better to keep the whole set on the old generation than move a single step forward.
 
-## ⚠️⚠️ 使用警告（刷之前必须看）⚠️⚠️
-##   本包会把【全部 24 个固件分区】写成 CPH2415_15.0.0.700(EX01) —— 这是一次【降级】。
-##   · 适用: 仍停在 pre-1301 代（700 或更早）、且 9008 泄露证书还没被换掉的 CPH2415。
-##          刷它 = 保住那台机器的 9008 后路。
-##   · 危险: 已经在 1301+ / 1601 代、且 ARB 熔丝已被顶高的机器 —— 绝对不要刷。
-##          往低代刷 = 正对熔断方向，可能直接黑砖。
-##   · 本机（734ce825）实测无 ARB，但也【没有】在手机上执行过这次降级，
-##     仅在包侧生效；设备上引导链四件套为 700，其余 16 个仍为 1601。
-## 生成器: tools/mk-radio-firmware.py（本树中不存在，清单为手工维护）
-## ⚠️ 换固件时必须同步改【三处】: radio/*.img、vendor/oneplus/ovaltine/Android.mk
-##    的 add-radio-file-sha1-checked、以及本文件的 pin —— 漏掉 Android.mk 构建会报错。
+## ⚠️⚠️ WARNING (read before flashing) ⚠️⚠️
+##   This package writes ALL 24 firmware partitions as CPH2415_15.0.0.700(EX01). This is a DOWNGRADE.
+##   · For: CPH2415 still on the pre-1301 generation (700 or earlier) whose leaked 9008 certificate hasn't been replaced.
+##          Flashing it = keeping that phone's 9008 rescue path.
+##   · Danger: phones already on 1301+ / 1601 with raised ARB fuses must NEVER flash this.
+##          Flashing a lower generation runs straight into the fuses and may hard brick the phone.
+##   · This device (734ce825) measured no ARB, but this downgrade has NOT been run on the phone;
+##     it only applies in the package. On the device the four boot chain images are 700 and the other 16 are still 1601.
+## Generator: tools/mk-radio-firmware.py (not in this tree, the list is maintained by hand)
+## ⚠️ When changing firmware, update THREE places together: radio/*.img, vendor/oneplus/ovaltine/Android.mk
+##    add-radio-file-sha1-checked, and the pins in this file. Missing Android.mk makes the build fail.
 abl.img;AB|02084da19490eaece06f4450b201fb481d9fb12e
 aop.img;AB|d87804b2dcdccadc4b463c3b3e9906ff7603f02d
 aop_config.img;AB|f67d6310efb34c92c3214321f3e5eb168c61bb24

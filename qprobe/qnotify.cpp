@@ -1,4 +1,4 @@
-// 汐 2026-10-10：调 composer 的 QService notifyCallback（命令 300/301），看 hbm_enable 会不会变。
+// Xi 2026-10-10: calls composer's QService notifyCallback (commands 300/301) to see whether hbm_enable changes.
 #include <binder/IServiceManager.h>
 #include <binder/ProcessState.h>
 #include <binder/IBinder.h>
