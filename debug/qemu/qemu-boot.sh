@@ -42,13 +42,13 @@ prepare() {
     # Disk: real GPT names, super with the phone's geometry, blank userdata.
     local args=() p sz
     for p in system system_ext product vendor odm vendor_dlkm; do
-        sz=$(stat -c%s "$out/$p.img")
+        sz=$(stat -Lc%s "$out/$p.img")
         args+=(--partition "${p}_a:readonly:$sz:qti_dynamic_partitions_a" --image "${p}_a=$out/$p.img"
                --partition "${p}_b:readonly:0:qti_dynamic_partitions_b")
     done
     "$bin/lpmake" --metadata-size 65536 --super-name super --metadata-slots 3 --device super:11274289152 \
         --group qti_dynamic_partitions_a:11270094848 --group qti_dynamic_partitions_b:11270094848 \
-        "${args[@]}" --output super.raw 2>&1 | grep -E 'error|Error|fail' || true
+        "${args[@]}" --output super.raw > lpmake.log 2>&1 || { tail -5 lpmake.log >&2; echo "lpmake failed" >&2; exit 1; }
     truncate -s 256M metadata.raw
     "$bin/mke2fs" -q -t ext4 -b 4096 metadata.raw
     python3 -I "$here/mkdisk.py" "$out"
