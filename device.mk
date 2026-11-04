@@ -122,6 +122,16 @@ PRODUCT_PACKAGES += \
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH)
 
+# Bring-up debugging on userdebug builds: adb on USB from boot with no
+# authorization prompt, running as root. Anyone with a cable gets a root shell,
+# so don't publish these builds. vendor/lineage reads WITH_ADB_INSECURE, and it
+# also keeps ro.debuggable=1.
+ifeq ($(TARGET_BUILD_VARIANT),userdebug)
+WITH_ADB_INSECURE := true
+PRODUCT_COPY_FILES += \
+    device/oneplus/ovaltine/debug/init.ovaltine.debug.rc:$(TARGET_COPY_OUT_SYSTEM)/etc/init/init.ovaltine.debug.rc
+endif
+
 # Inherit from the common OEM chipset makefile.
 $(call inherit-product, device/oneplus/sm8450-common/common.mk)
 
