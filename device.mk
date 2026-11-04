@@ -1,19 +1,5 @@
-#   (original line: see port-t5/evidence/device_oneplus_ovaltine_device.mk.before)
 # Copyright (C) 2021-2025 The LineageOS Project
-#   (original line: see port-t5/evidence/device_oneplus_ovaltine_device.mk.before)
 # SPDX-License-Identifier: Apache-2.0
-#   (original line: see port-t5/evidence/device_oneplus_ovaltine_device.mk.before)
-
-# AviumUI build configuration
-# This device ships with GMS. WITH_GMS requires vendor/pixel/gms,
-# vendor/pixel/clocks and vendor/pixel/sounds to be checked out; run
-#   avium get_gms --cli --update-local-manifests --run-sync
-# once after a fresh repo sync, otherwise the build aborts with
-# "Aborting due to missing required repositories".
-WITH_GMS := true
-
-# Shown as ro.avium.maintainer in the build fingerprint
-AVIUM_MAINTAINER := MagicNekoROM
 
 # AAPT
 PRODUCT_AAPT_CONFIG := normal
@@ -55,7 +41,6 @@ PRODUCT_COPY_FILES += \
 $(call soong_config_set_bool,qtidisplay,oplus_udfps,true)
 # 10T (ovaltine) has no Pixelworks iris hardware, so pxlw_vendor_namespace isn't set;
 # otherwise the soong_config select in hardware/qcom-caf/sm8550/display requires libpwirisfeature.
-#   (original line: see port-t5/evidence/device_oneplus_ovaltine_device.mk.before)
 
 # Fingerprint
 # Back to the LineageOS upstream approach (used by both sm8350 and sm8450):
@@ -118,6 +103,7 @@ PRODUCT_COPY_FILES += \
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
+    $(LOCAL_PATH)/overlay-custom \
     $(LOCAL_PATH)/overlay-lineage
 
 PRODUCT_PACKAGES += \
@@ -149,11 +135,10 @@ $(call inherit-product, vendor/oneplus/ovaltine/ovaltine-vendor.mk)
 $(call inherit-product-if-exists, vendor/extra/product.mk)
 
 # Third-party Adreno graphics stack (Meta Quest 3 V@0837.0.7).
-# ON BY DEFAULT since 2026-10-22. BoardConfig.mk owns the same variable and the
-# two must agree; passing GPU_DRIVER_Q3=false keeps the OEM graphics modules
-# instead. The OEM blobs stay untouched either way, so falling back needs no
+# Off by default for bring-up. BoardConfig.mk owns the same variable and the
+# two must agree; passing GPU_DRIVER_Q3=true swaps out the OEM graphics modules. The OEM blobs stay untouched either way, so falling back needs no
 # git operations.
-GPU_DRIVER_Q3 ?= true
+GPU_DRIVER_Q3 ?= false
 ifeq ($(GPU_DRIVER_Q3),true)
 GPU_OEM_GRAPHICS_MODULES := \
     eglSubDriverAndroid \
@@ -200,17 +185,16 @@ endif
 # /data file and force-stopping that app -- no rebuild, no reboot, no root.
 #
 # GPU_DRIVER_TURNIP now only picks the *image default*:
-#   true  (default) -> *=freedreno, the open-source ICD
-#   false           -> *=adreno, the OEM ICD
-GPU_DRIVER_TURNIP ?= true
+#   true            -> switcher with *=freedreno, the open-source ICD
+#   false (default) -> plain OEM Adreno, no switcher (bring-up)
+GPU_DRIVER_TURNIP ?= false
 
+ifeq ($(GPU_DRIVER_TURNIP),true)
 PRODUCT_PACKAGES += \
+    vulkan.freedreno \
     vulkan_switcher \
     vulkan-switch \
     VulkanSwitch
-
-# adb root on a fresh flash; the developer option still overrides it.
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.sys.root_access=3
 
 # /data/misc/vulkan must be created by the init domain, so this rc goes on the
 # system partition instead of next to the other vendor bits.
@@ -218,9 +202,8 @@ PRODUCT_COPY_FILES += \
     device/oneplus/ovaltine/vulkan-switcher/vulkan_perapp.rc:$(TARGET_COPY_OUT_SYSTEM)/etc/init/vulkan_perapp.rc
 
 PRODUCT_VENDOR_PROPERTIES += ro.hardware.vulkan=switcher
-
-ifeq ($(GPU_DRIVER_TURNIP),true)
-PRODUCT_PACKAGES += vulkan.freedreno
+else
+PRODUCT_VENDOR_PROPERTIES += ro.hardware.vulkan=adreno
 endif
 # No /vendor/etc/vulkan/per_app.conf on purpose: sepolicy neverallow
 # (domain.te:2155) forbids app domains from reading vendor_file_type files.

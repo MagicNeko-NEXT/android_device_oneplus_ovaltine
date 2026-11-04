@@ -6,3 +6,6 @@
 
 PRODUCT_MAKEFILES := \
     $(LOCAL_DIR)/custom_ovaltine.mk
+
+COMMON_LUNCH_CHOICES := \
+    custom_ovaltine-cp2a-userdebug

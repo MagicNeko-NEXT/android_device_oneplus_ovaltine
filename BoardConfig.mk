@@ -39,11 +39,10 @@ include vendor/oneplus/ovaltine/BoardConfigVendor.mk
 # Third-party Adreno driver selection (Meta Quest 3 V@0837.0.7; the files live
 # in vendor/oneplus/sm8450-common/gpu-q3, wired up by that directory's own
 # gpu-q3.mk).
-# ON BY DEFAULT since 2026-10-22, so a plain `brunch ovaltine` ships the Q3
-# stack. `?=` only assigns when unset, so the environment override still wins
-# and falling back to the OEM driver is:
-#   GPU_DRIVER_Q3=false brunch ovaltine
-GPU_DRIVER_Q3 ?= true
+# Off by default for bring-up, so a plain build uses the OEM stack. `?=` only
+# assigns when unset, so it can be enabled from the environment with:
+#   GPU_DRIVER_Q3=true
+GPU_DRIVER_Q3 ?= false
 $(call soong_config_set,gpu_oplus,driver_q3,$(GPU_DRIVER_Q3))
 
 # The original fingerprint HAL is renamed to IFingerprint/oplusfp so the proxy
@@ -55,10 +54,8 @@ DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += \
 # Mesa Turnip (freedreno) Vulkan driver switch. Independent from
 # GPU_DRIVER_Q3: Q3 only swaps the Adreno stack, Turnip replaces the Vulkan
 # driver itself with the open-source one.
-# ON BY DEFAULT since 2026-10-22: the open-source Vulkan ICD is what a plain
-# `brunch ovaltine` installs. Both ICDs stay on disk and a runtime
-# switcher (vulkan.switcher.so, see device.mk) picks per app, so this
-# variable only chooses the image default:
-#   GPU_DRIVER_TURNIP=false brunch ovaltine
-GPU_DRIVER_TURNIP ?= true
+# Off by default for bring-up. Enabling it also installs the runtime switcher
+# (vulkan.switcher.so, see device.mk):
+#   GPU_DRIVER_TURNIP=true
+GPU_DRIVER_TURNIP ?= false
 $(call soong_config_set_bool,gpu_oplus,driver_turnip,$(GPU_DRIVER_TURNIP))
