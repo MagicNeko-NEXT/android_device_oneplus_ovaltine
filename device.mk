@@ -103,8 +103,7 @@ PRODUCT_COPY_FILES += \
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
-    $(LOCAL_PATH)/overlay-custom \
-    $(LOCAL_PATH)/overlay-lineage
+    $(LOCAL_PATH)/overlay-custom
 
 PRODUCT_PACKAGES += \
     OPlusFrameworksResTarget \
@@ -129,8 +128,12 @@ $(call inherit-product, device/oneplus/sm8450-common/common.mk)
 # Inherit from the proprietary files makefile.
 $(call inherit-product, vendor/oneplus/ovaltine/ovaltine-vendor.mk)
 
+# No camera app is preinstalled: users choose their own.
+PRODUCT_PACKAGES += \
+    OvaltineRemoveCameraApp
+
 # vendor/extra (LineageOS community extras): PRODUCT_ADB_KEYS whitelists a
-# public key for adbd, overlay-lineage ships a few UI defaults, iperf3/tinymix
+# public key for adbd, iperf3/tinymix
 # are handy on-device tools. ih8sn and GMS stay off unless asked for.
 $(call inherit-product-if-exists, vendor/extra/product.mk)
 

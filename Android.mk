@@ -1,0 +1,16 @@
+LOCAL_PATH := $(call my-dir)
+
+ifeq ($(TARGET_DEVICE),ovaltine)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := OvaltineRemoveCameraApp
+LOCAL_MODULE_CLASS := APPS
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
+LOCAL_CERTIFICATE := PRESIGNED
+LOCAL_SRC_FILES := /dev/null
+LOCAL_UNINSTALLABLE_MODULE := true
+LOCAL_OVERRIDES_PACKAGES := Aperture ApertureLensLauncher ApertureFrameworksBaseOverlay
+include $(BUILD_PREBUILT)
+
+endif
