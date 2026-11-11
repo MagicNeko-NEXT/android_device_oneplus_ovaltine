@@ -1,5 +1,0 @@
-# Bring-up only, installed on userdebug builds. Start adbd as root, so dmesg and
-# pstore are readable even when the boot never reaches Settings to enable
-# rooted debugging. adbd ignores this property unless the build is debuggable.
-on init && property:ro.debuggable=1
-    setprop service.adb.root 1
