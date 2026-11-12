@@ -122,6 +122,12 @@ PRODUCT_PACKAGES += \
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH)
 
+# Bring-up debugging on userdebug builds: adb on USB from boot with no
+# authorization prompt, running as root.
+ifeq ($(TARGET_BUILD_VARIANT),userdebug)
+WITH_ADB_INSECURE := true
+endif
+
 # Inherit from the common OEM chipset makefile.
 $(call inherit-product, device/oneplus/sm8450-common/common.mk)
 
