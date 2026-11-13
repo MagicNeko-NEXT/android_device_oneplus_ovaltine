@@ -139,6 +139,7 @@ blob_fixups: blob_fixups_user_type = {
     'product/etc/sysconfig/com.android.hotwordenrollment.common.util.xml': blob_fixup()
         .regex_replace('/my_product', '/product'),
     'vendor/lib64/libcamximageformatutils.so': blob_fixup()
+        .add_needed('libcamxexternalformatutils.so')
         .replace_needed('libdisplayconfig.qti.so', 'libdisplayconfig.stock.so')
         .replace_needed('vendor.oplus.hardware.commondcs-V1-ndk_platform.so', 'vendor.oplus.hardware.commondcs-V1-ndk.so')
         .replace_needed('vendor.oplus.hardware.performance-V1-ndk_platform.so', 'vendor.oplus.hardware.performance-V1-ndk.so')
