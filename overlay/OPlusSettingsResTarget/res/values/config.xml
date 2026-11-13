@@ -11,4 +11,7 @@
     <!-- The radius of the enrollment progress bar, in dp -->
     <integer name="config_udfpsEnrollProgressBar" translatable="false">91</integer>
 
+    <!-- Move the UDFPS enrollment skip button to the side so it does not overlap the sensor -->
+    <bool name="config_useLegacyUdfpsUi">true</bool>
+
 </resources>
