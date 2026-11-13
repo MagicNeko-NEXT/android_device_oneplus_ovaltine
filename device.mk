@@ -147,7 +147,7 @@ $(call inherit-product-if-exists, vendor/extra/product.mk)
 # Off by default for bring-up. BoardConfig.mk owns the same variable and the
 # two must agree; passing GPU_DRIVER_Q3=true swaps out the OEM graphics modules. The OEM blobs stay untouched either way, so falling back needs no
 # git operations.
-GPU_DRIVER_Q3 ?= false
+GPU_DRIVER_Q3 ?= true
 ifeq ($(GPU_DRIVER_Q3),true)
 GPU_OEM_GRAPHICS_MODULES := \
     eglSubDriverAndroid \
