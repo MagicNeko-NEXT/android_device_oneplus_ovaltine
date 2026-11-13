@@ -14,5 +14,5 @@ vendor.display.skip_color_manager=false
 
 # Fingerprint (optical UDFPS SensorProps shim)
 persist.vendor.fingerprint.sensor_type=optical
-persist.vendor.fingerprint.optical.iconlocation=230
+persist.vendor.fingerprint.optical.iconlocation=250
 persist.vendor.fingerprint.optical.iconsize=171

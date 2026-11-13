@@ -284,7 +284,7 @@ class FingerprintProxy : public fp::BnFingerprint {
 
         fp::SensorLocation loc;
         loc.sensorLocationX = 540;
-        loc.sensorLocationY = 2170;
+        loc.sensorLocationY = 2162;
         loc.sensorRadius = 100;
         props.sensorLocations = {loc};
 

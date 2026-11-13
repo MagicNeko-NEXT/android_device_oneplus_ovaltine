@@ -333,7 +333,7 @@
          The framework uses this array to help decide the device has an under-display sensor; without it, related coordination takes the fallback path. -->
     <integer-array name="config_udfps_sensor_props" translatable="false">
         <item>540</item>
-        <item>2182</item>
+        <item>2162</item>
         <item>86</item>
     </integer-array>
 
