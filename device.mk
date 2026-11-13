@@ -42,46 +42,11 @@ $(call soong_config_set_bool,qtidisplay,oplus_udfps,true)
 # 10T (ovaltine) has no Pixelworks iris hardware, so pxlw_vendor_namespace isn't set;
 # otherwise the soong_config select in hardware/qcom-caf/sm8550/display requires libpwirisfeature.
 
-# Fingerprint
-# Back to the LineageOS upstream approach (used by both sm8350 and sm8450):
-#   hardware/oplus/hidl/fingerprint provides the HIDL 2.3 service, the framework still has the
-#   .../biometrics/sensors/fingerprint/hidl path (A16 didn't remove HIDL fingerprint support),
-#   and hardware/interfaces/biometrics/fingerprint/2.1|2.2|2.3 are all present.
-#
-# avium previously commented this line out and used a custom AIDL proxy (device/oneplus/ovaltine/
-# fingerprint), but that proxy never worked end to end: createSession against the stock HAL gives
-# BAD_TYPE, and the framework doesn't catch the exception, so a dummy session had to absorb it.
-#
-# About the "missing VINTF declaration causes SIGSEGV" comment: cause and effect are reversed. If the service isn't in
-# PRODUCT_PACKAGES -> it's not in the output -> its own vintf_fragments aren't merged ->
-# the manifest naturally has no fingerprint. Once enabled, vintf_fragments merge automatically.
-# The stock HAL is restored to the original (registers IFingerprint/default in odm, see
-# vendor/oneplus/ovaltine/proprietary/odm/etc/vintf/manifest/
-# manifest_oplus_fingerprint_aidl_v2.xml), and the framework connects to it directly,
-# with no need for the HIDL 2.3 service or the AIDL proxy.
-# Evidence: in crDroidAndroid-16.0-20261012-ovaltine-v12.12-livefix.zip
-# fps_hal registers /default, there is no 2.3-service rc, and fingerprint works.
-# PRODUCT_PACKAGES += \
-#     android.hardware.biometrics.fingerprint@2.3-service.oplus
-
+# Fingerprint (stock ODM IFingerprint/default AIDL HAL + libshims_aidl_fingerprint_v2.oplus)
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.fingerprint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.fingerprint.xml
 
 $(call soong_config_set,surfaceflinger,udfps_lib,//hardware/oplus:libudfps_extension.oplus)
-
-# ---- crDroid-specific parameters ----------------------------------------------
-# TARGET_HAS_UDFPS
-#   Used by: vendor/addons/config.mk:22 `ifeq ($(TARGET_HAS_UDFPS),true)`
-#           → PRODUCT_PACKAGES += UdfpsIcons UdfpsAnimations
-#   This is a crDroid-only switch: stock LineageOS has no vendor/addons and nothing in the source uses it;
-#   unset defaults to off, and fingerprint still unlocks, just without crDroid's icon/animation skin.
-#   Device evidence: 10T (ovaltine) has an optical under-display sensor, overlay/OPlusFrameworksResTarget is set from
-#           persist.vendor.fingerprint.optical.sensorlocation=540::2182 for
-#           config_udfps_sensor_props, and the SystemUI dim layer and brightness table are hand-tuned.
-#   Form follows upstream crdroidandroid/android_device_oneplus_salami device.mk:33.
-TARGET_HAS_UDFPS := true
-# -----------------------------------------------------------------------------
-
 # NFC
 PRODUCT_PACKAGES += \
     android.hardware.nfc-service.nxp \
