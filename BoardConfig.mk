@@ -32,10 +32,6 @@ TARGET_RECOVERY_UI_MARGIN_HEIGHT := 103
 
 # Include the proprietary files BoardConfig.
 include vendor/oneplus/ovaltine/BoardConfigVendor.mk
-
-# vendor/extra board config
--include vendor/extra/BoardConfigExtra.mk
-
 # Third-party Adreno driver selection (Meta Quest 3 V@0837.0.7; the files live
 # in vendor/oneplus/sm8450-common/gpu-q3, wired up by that directory's own
 # gpu-q3.mk).

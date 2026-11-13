@@ -107,11 +107,6 @@ PRODUCT_PACKAGES += \
     ApertureLensLauncher \
     ApertureFrameworksBaseOverlay
 
-# vendor/extra (LineageOS community extras): PRODUCT_ADB_KEYS whitelists a
-# public key for adbd, iperf3/tinymix
-# are handy on-device tools. ih8sn and GMS stay off unless asked for.
-$(call inherit-product-if-exists, vendor/extra/product.mk)
-
 # Third-party Adreno graphics stack (Meta Quest 3 V@0837.0.7).
 # Off by default for bring-up. BoardConfig.mk owns the same variable and the
 # two must agree; passing GPU_DRIVER_Q3=true swaps out the OEM graphics modules. The OEM blobs stay untouched either way, so falling back needs no
