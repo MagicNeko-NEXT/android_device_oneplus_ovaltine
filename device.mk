@@ -99,9 +99,13 @@ $(call inherit-product, device/oneplus/sm8450-common/common.mk)
 # Inherit from the proprietary files makefile.
 $(call inherit-product, vendor/oneplus/ovaltine/ovaltine-vendor.mk)
 
-# No camera app is preinstalled: users choose their own.
+# Install LineageOS Aperture as a removable user app on first boot.
 PRODUCT_PACKAGES += \
-    OvaltineRemoveCameraApp
+    OvaltineRemoveCameraApp \
+    OvaltineAperturePreinstaller \
+    AperturePreinstallApk \
+    ApertureLensLauncher \
+    ApertureFrameworksBaseOverlay
 
 # vendor/extra (LineageOS community extras): PRODUCT_ADB_KEYS whitelists a
 # public key for adbd, iperf3/tinymix

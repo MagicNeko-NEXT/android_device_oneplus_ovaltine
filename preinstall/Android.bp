@@ -1,0 +1,43 @@
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+
+genrule {
+    name: "AperturePreinstallApkGen",
+    device_common_srcs: ["//packages/apps/Aperture/app:Aperture{.apk}"],
+    out: ["Aperture.apk"],
+    cmd: "cp $(in) $(out)",
+}
+
+prebuilt_etc {
+    name: "AperturePreinstallApk",
+    product_specific: true,
+    sub_dir: "preinstall",
+    src: ":AperturePreinstallApkGen",
+    filename: "Aperture.apk",
+}
+
+prebuilt_etc {
+    name: "privapp-permissions-ovaltine-preinstall.xml",
+    system_ext_specific: true,
+    sub_dir: "permissions",
+    src: "privapp-permissions-ovaltine-preinstall.xml",
+    filename_from_src: true,
+}
+
+android_app {
+    name: "OvaltineAperturePreinstaller",
+    srcs: ["src/**/*.java"],
+    manifest: "AndroidManifest.xml",
+    sdk_version: "current",
+    system_ext_specific: true,
+    privileged: true,
+    certificate: "platform",
+    optimize: {
+        enabled: false,
+    },
+    required: [
+        "AperturePreinstallApk",
+        "privapp-permissions-ovaltine-preinstall.xml",
+    ],
+}
