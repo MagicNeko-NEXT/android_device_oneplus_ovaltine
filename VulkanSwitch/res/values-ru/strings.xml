@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Vulkan Switch</string>
+    <string name="title">Переключение драйвера Vulkan</string>
+
+    <string name="status_global_default">Глобальный драйвер: %1$s</string>
+    <string name="status_config_file">Файл конфигурации: %1$s</string>
+    <string name="status_entries">Всего записей: %1$d</string>
+    <string name="status_not_set">не задан (по умолчанию %1$s)</string>
+
+    <string name="button_global_default">Глобальный драйвер: %1$s (изменить)</string>
+    <string name="button_clear_all">Сбросить все настройки</string>
+
+    <string name="hint">Выберите приложение из списка ниже, чтобы назначить ему драйвер. Для применения изменений остановите приложение.</string>
+
+    <string name="driver_adreno">Qualcomm Vulkan</string>
+    <string name="driver_adreno_q3">Qualcomm Vulkan (Q3)</string>
+    <string name="driver_freedreno">Mesa Turnip (открытый драйвер)</string>
+    <string name="driver_follow_global">Использовать глобальный</string>
+    <string name="driver_cancel">Отмена</string>
+
+    <string name="dialog_title_global">Глобальный драйвер</string>
+    <string name="dialog_title_app">%1$s\nТекущий драйвер: %2$s</string>
+    <string name="dialog_current_follow">глобальный</string>
+
+    <string name="toast_cleared">Настройки сброшены — все приложения используют драйвер по умолчанию</string>
+    <string name="toast_mkdir_failed">Не удалось создать %1$s</string>
+    <string name="toast_write_failed">Ошибка записи: %1$s</string>
+    <string name="toast_chmod_failed">Предупреждение: не удалось установить права 0644, другие приложения могут не прочитать файл</string>
+    <string name="toast_global_updated">Глобальный драйвер обновлён</string>
+    <string name="toast_app_set">Сохранено для %1$s — остановите приложение для применения</string>
+
+    <string name="row_detail">%1$s  →  %2$s</string>
+    <string name="row_global_suffix">%1$s (глобальный)</string>
+    <string name="row_default_suffix">%1$s (по умолчанию)</string>
+</resources>

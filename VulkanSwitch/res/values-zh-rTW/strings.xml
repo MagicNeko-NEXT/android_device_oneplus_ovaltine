@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Vulkan 切換</string>
+    <string name="title">Vulkan 驅動切換</string>
+
+    <string name="status_global_default">全域預設：%1$s</string>
+    <string name="status_config_file">設定檔：%1$s</string>
+    <string name="status_entries">目前項目數：%1$d</string>
+    <string name="status_not_set">未設定（預設 %1$s）</string>
+
+    <string name="button_global_default">全域預設：%1$s（點擊變更）</string>
+    <string name="button_clear_all">清除所有設定</string>
+
+    <string name="hint">下方列出已安裝的應用程式。點擊某個應用程式即可選擇驅動；變更後需強制停止該應用程式才會生效。</string>
+
+    <string name="driver_adreno">高通 Vulkan</string>
+    <string name="driver_adreno_q3">高通 Vulkan（Q3）</string>
+    <string name="driver_freedreno">Mesa Turnip（開源）</string>
+    <string name="driver_follow_global">跟隨全域預設</string>
+    <string name="driver_cancel">取消</string>
+
+    <string name="dialog_title_global">全域預設驅動</string>
+    <string name="dialog_title_app">%1$s\n目前：%2$s</string>
+    <string name="dialog_current_follow">跟隨全域</string>
+
+    <string name="toast_cleared">已清除，所有應用程式恢復預設驅動</string>
+    <string name="toast_mkdir_failed">無法建立 %1$s</string>
+    <string name="toast_write_failed">寫入失敗：%1$s</string>
+    <string name="toast_chmod_failed">警告：無法設定 0644 權限，其他應用程式可能讀不到該檔案</string>
+    <string name="toast_global_updated">全域預設已更新</string>
+    <string name="toast_app_set">%1$s 已設定，記得強制停止它</string>
+
+    <string name="row_detail">%1$s  →  %2$s</string>
+    <string name="row_global_suffix">%1$s（全域）</string>
+    <string name="row_default_suffix">%1$s（預設）</string>
+</resources>

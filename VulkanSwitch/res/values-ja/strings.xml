@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Vulkan スイッチ</string>
+    <string name="title">Vulkan ドライバーの切り替え</string>
+
+    <string name="status_global_default">グローバル既定：%1$s</string>
+    <string name="status_config_file">設定ファイル：%1$s</string>
+    <string name="status_entries">現在のエントリ数：%1$d</string>
+    <string name="status_not_set">未設定（既定 %1$s）</string>
+
+    <string name="button_global_default">グローバル既定：%1$s（タップで変更）</string>
+    <string name="button_clear_all">すべての設定を消去</string>
+
+    <string name="hint">インストール済みのアプリが下に表示されます。アプリをタップしてドライバーを選択してください。変更を反映するにはアプリを強制停止する必要があります。</string>
+
+    <string name="driver_adreno">Qualcomm Vulkan</string>
+    <string name="driver_adreno_q3">Qualcomm Vulkan（Q3）</string>
+    <string name="driver_freedreno">Mesa Turnip（オープンソース）</string>
+    <string name="driver_follow_global">グローバル既定に従う</string>
+    <string name="driver_cancel">キャンセル</string>
+
+    <string name="dialog_title_global">グローバル既定のドライバー</string>
+    <string name="dialog_title_app">%1$s\n現在：%2$s</string>
+    <string name="dialog_current_follow">グローバルに従う</string>
+
+    <string name="toast_cleared">消去しました。すべてのアプリが既定のドライバーに戻ります</string>
+    <string name="toast_mkdir_failed">%1$s を作成できません</string>
+    <string name="toast_write_failed">書き込みに失敗しました：%1$s</string>
+    <string name="toast_chmod_failed">警告：0644 を設定できませんでした。他のアプリが読み取れない可能性があります</string>
+    <string name="toast_global_updated">グローバル既定を更新しました</string>
+    <string name="toast_app_set">%1$s を設定しました。強制停止を忘れずに</string>
+
+    <string name="row_detail">%1$s  →  %2$s</string>
+    <string name="row_global_suffix">%1$s（グローバル）</string>
+    <string name="row_default_suffix">%1$s（既定）</string>
+</resources>
