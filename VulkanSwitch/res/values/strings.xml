@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Vulkan Switch</string>
+    <string name="title">Vulkan driver switch</string>
+
+    <!-- Status block -->
+    <string name="status_global_default">Global default: %1$s</string>
+    <string name="status_config_file">Config file: %1$s</string>
+    <string name="status_entries">Current entries: %1$d</string>
+    <string name="status_not_set">not set (default %1$s)</string>
+
+    <!-- Buttons -->
+    <string name="button_global_default">Global default: %1$s (tap to change)</string>
+    <string name="button_clear_all">Clear all settings</string>
+
+    <!-- Hint -->
+    <string name="hint">Installed apps are listed below. Tap one to pick a driver; force stop the app for the change to take effect.</string>
+
+    <!-- Driver names -->
+    <string name="driver_adreno">Qualcomm Vulkan</string>
+    <string name="driver_adreno_q3">Qualcomm Vulkan (Q3)</string>
+    <string name="driver_freedreno">Mesa Turnip (open source)</string>
+    <string name="driver_follow_global">Follow global default</string>
+    <string name="driver_cancel">Cancel</string>
+
+    <!-- Dialog -->
+    <string name="dialog_title_global">Global default driver</string>
+    <string name="dialog_title_app">%1$s\nCurrent: %2$s</string>
+    <string name="dialog_current_follow">follow global</string>
+
+    <!-- Toasts -->
+    <string name="toast_cleared">Cleared, all apps are back on the default driver</string>
+    <string name="toast_mkdir_failed">Unable to create %1$s</string>
+    <string name="toast_write_failed">Write failed: %1$s</string>
+    <string name="toast_chmod_failed">Warning: failed to set 0644, other apps may not be able to read it</string>
+    <string name="toast_global_updated">Global default updated</string>
+    <string name="toast_app_set">%1$s set, remember to force stop it</string>
+
+    <!-- Row detail -->
+    <string name="row_detail">%1$s  →  %2$s</string>
+    <string name="row_global_suffix">%1$s (global)</string>
+    <string name="row_default_suffix">%1$s (default)</string>
+</resources>

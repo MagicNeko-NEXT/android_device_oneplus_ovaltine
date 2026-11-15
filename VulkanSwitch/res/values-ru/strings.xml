@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Vulkan Switch</string>
+    <string name="title">Переключение драйвера Vulkan</string>
+
+    <string name="status_global_default">Глобальный по умолчанию: %1$s</string>
+    <string name="status_config_file">Файл конфигурации: %1$s</string>
+    <string name="status_entries">Текущих записей: %1$d</string>
+    <string name="status_not_set">не задан (по умолчанию %1$s)</string>
+
+    <string name="button_global_default">Глобальный по умолчанию: %1$s (нажмите, чтобы изменить)</string>
+    <string name="button_clear_all">Очистить все настройки</string>
+
+    <string name="hint">Ниже перечислены установленные приложения. Нажмите на приложение, чтобы выбрать драйвер; для применения изменения принудительно остановите приложение.</string>
+
+    <string name="driver_adreno">Qualcomm Vulkan</string>
+    <string name="driver_adreno_q3">Qualcomm Vulkan (Q3)</string>
+    <string name="driver_freedreno">Mesa Turnip (открытый)</string>
+    <string name="driver_follow_global">Как глобальный</string>
+    <string name="driver_cancel">Отмена</string>
+
+    <string name="dialog_title_global">Глобальный драйвер по умолчанию</string>
+    <string name="dialog_title_app">%1$s\nТекущий: %2$s</string>
+    <string name="dialog_current_follow">как глобальный</string>
+
+    <string name="toast_cleared">Очищено, все приложения вернулись к драйверу по умолчанию</string>
+    <string name="toast_mkdir_failed">Не удалось создать %1$s</string>
+    <string name="toast_write_failed">Ошибка записи: %1$s</string>
+    <string name="toast_chmod_failed">Предупреждение: не удалось установить 0644, другие приложения могут не прочитать файл</string>
+    <string name="toast_global_updated">Глобальный по умолчанию обновлён</string>
+    <string name="toast_app_set">%1$s задано, не забудьте принудительно остановить</string>
+
+    <string name="row_detail">%1$s  →  %2$s</string>
+    <string name="row_global_suffix">%1$s (глобальный)</string>
+    <string name="row_default_suffix">%1$s (по умолчанию)</string>
+</resources>

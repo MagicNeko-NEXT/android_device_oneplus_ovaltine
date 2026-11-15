@@ -45,6 +45,10 @@ import java.util.Map;
  * system and SELinux only grants write on vulkan_perapp_conf_file to
  * system_app. The file is left world-readable on purpose, because the shim
  * reads it inside the *client* process (untrusted_app), not here.
+ *
+ * The Qualcomm ICD is always the default. Turnip is opt-in per app. When the
+ * Q3 graphics stack is enabled the Qualcomm ICD comes from the Q3 package
+ * instead of the in-tree one, so the label follows GPU_DRIVER_Q3.
  */
 public class MainActivity extends Activity {
     private static final String CONF_DIR = "/data/misc/vulkan";
@@ -59,6 +63,9 @@ public class MainActivity extends Activity {
     private Button mGlobalButton;
     private BaseAdapter mAdapter;
 
+    /** True when the Q3 graphics stack replaced the in-tree Qualcomm one. */
+    private boolean mQ3;
+
     private static final class AppEntry {
         String pkg;
         String label;
@@ -68,6 +75,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mQ3 = detectQ3();
 
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
@@ -79,7 +88,7 @@ public class MainActivity extends Activity {
         header.setPadding(pad, pad, pad, pad / 2);
 
         TextView title = new TextView(this);
-        title.setText("Vulkan driver switch");
+        title.setText(R.string.title);
         title.setTextSize(20);
         header.addView(title);
 
@@ -93,19 +102,19 @@ public class MainActivity extends Activity {
         header.addView(mGlobalButton);
 
         Button reset = new Button(this);
-        reset.setText("Clear all settings");
+        reset.setText(R.string.button_clear_all);
         reset.setOnClickListener(v -> {
             mConf.clear();
             if (saveConf()) {
                 rebuild();
-                toast("Cleared, all apps are back on the default driver");
+                toast(getString(R.string.toast_cleared));
             }
         });
         header.addView(reset);
 
         TextView hint = new TextView(this);
         hint.setTextSize(12);
-        hint.setText("Installed apps are listed below. Tap one to pick a driver; force stop the app for the change to take effect.");
+        hint.setText(R.string.hint);
         hint.setPadding(0, pad / 2, 0, pad / 2);
         header.addView(hint);
 
@@ -134,6 +143,30 @@ public class MainActivity extends Activity {
         super.onResume();
         loadConf();
         rebuild();
+    }
+
+    /**
+     * The Q3 package installs its own vulkan.adreno.so, so the Qualcomm ICD
+     * label has to say which one is in use. ro.vendor.gpu.q3 is set by the
+     * device makefile when GPU_DRIVER_Q3 is true.
+     */
+    private boolean detectQ3() {
+        try {
+            Class<?> sp = Class.forName("android.os.SystemProperties");
+            java.lang.reflect.Method get = sp.getMethod("get", String.class, String.class);
+            Object v = get.invoke(null, "ro.vendor.gpu.q3", "false");
+            return "true".equals(String.valueOf(v));
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+
+    /** Human-readable name for a driver subname, honouring the Q3 stack. */
+    private String driverLabel(String subname) {
+        if ("freedreno".equals(subname)) {
+            return getString(R.string.driver_freedreno);
+        }
+        return getString(mQ3 ? R.string.driver_adreno_q3 : R.string.driver_adreno);
     }
 
     /** Parses the conf, dropping comments and anything unparsable. */
@@ -177,7 +210,7 @@ public class MainActivity extends Activity {
     private boolean saveConf() {
         File dir = new File(CONF_DIR);
         if (!dir.exists() && !dir.mkdirs()) {
-            toast("Unable to create " + CONF_DIR);
+            toast(getString(R.string.toast_mkdir_failed, CONF_DIR));
             return false;
         }
         File f = new File(CONF_PATH);
@@ -197,11 +230,11 @@ public class MainActivity extends Activity {
             w.write(sb.toString());
             w.flush();
         } catch (IOException e) {
-            toast("Write failed: " + e.getMessage());
+            toast(getString(R.string.toast_write_failed, String.valueOf(e.getMessage())));
             return false;
         }
         if (!f.setReadable(true, false)) {
-            toast("Warning: failed to set 0644, other apps may not be able to read it");
+            toast(getString(R.string.toast_chmod_failed));
         }
         return true;
     }
@@ -232,21 +265,32 @@ public class MainActivity extends Activity {
 
     private void rebuild() {
         String global = mConf.get(GLOBAL);
-        if (global == null) {
-            global = "not set (default adreno)";
-        }
-        mStatus.setText("Global default: " + global + "\nConfig file: " + CONF_PATH
-                + "\nCurrent entries: " + mConf.size());
-        mGlobalButton.setText("Global default: " + global + " (tap to change)");
+        String globalLabel = global == null
+                ? getString(R.string.status_not_set, driverLabel("adreno"))
+                : driverLabel(global);
+        mStatus.setText(getString(R.string.status_global_default, globalLabel) + "\n"
+                + getString(R.string.status_config_file, CONF_PATH) + "\n"
+                + getString(R.string.status_entries, mConf.size()));
+        mGlobalButton.setText(getString(R.string.button_global_default, globalLabel));
         mAdapter.notifyDataSetChanged();
     }
 
     private void pickDriver(final String pkg) {
-        final String[] items = {"adreno (Qualcomm OEM)", "freedreno (Mesa Turnip)", "Follow global default", "Cancel"};
+        final String[] items = {
+                driverLabel("adreno"),
+                driverLabel("freedreno"),
+                getString(R.string.driver_follow_global),
+                getString(R.string.driver_cancel),
+        };
         final String current = mConf.get(pkg);
+        String currentLabel = current == null
+                ? getString(R.string.dialog_current_follow)
+                : driverLabel(current);
+        String title = GLOBAL.equals(pkg)
+                ? getString(R.string.dialog_title_global)
+                : getString(R.string.dialog_title_app, pkg, currentLabel);
         new AlertDialog.Builder(this)
-                .setTitle(GLOBAL.equals(pkg) ? "Global default driver"
-                        : pkg + "\nCurrent: " + (current == null ? "follow global" : current))
+                .setTitle(title)
                 .setItems(items, (d, which) -> {
                     if (which == 0 || which == 1) {
                         mConf.put(pkg, DRIVERS[which]);
@@ -262,8 +306,8 @@ public class MainActivity extends Activity {
                     if (saveConf()) {
                         rebuild();
                         toast(GLOBAL.equals(pkg)
-                                ? "Global default updated"
-                                : pkg + " set, remember to force stop it");
+                                ? getString(R.string.toast_global_updated)
+                                : getString(R.string.toast_app_set, pkg));
                     }
                 })
                 .show();
@@ -272,10 +316,12 @@ public class MainActivity extends Activity {
     private String describe(String pkg) {
         String own = mConf.get(pkg);
         if (!TextUtils.isEmpty(own)) {
-            return own;
+            return driverLabel(own);
         }
         String global = mConf.get(GLOBAL);
-        return global == null ? "adreno (default)" : global + " (global)";
+        return global == null
+                ? getString(R.string.row_default_suffix, driverLabel("adreno"))
+                : getString(R.string.row_global_suffix, driverLabel(global));
     }
 
     /**
@@ -325,7 +371,7 @@ public class MainActivity extends Activity {
             AppEntry e = mApps.get(position);
             ((TextView) row.findViewById(android.R.id.text1)).setText(e.label);
             ((TextView) row.findViewById(android.R.id.text2))
-                    .setText(e.pkg + "  \u2192  " + describe(e.pkg));
+                    .setText(getString(R.string.row_detail, e.pkg, describe(e.pkg)));
             return row;
         }
     }
