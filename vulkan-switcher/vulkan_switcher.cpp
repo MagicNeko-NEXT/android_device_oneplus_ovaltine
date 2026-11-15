@@ -46,8 +46,12 @@ namespace {
 
 constexpr char kRwConfPath[] = "/data/misc/vulkan/per_app.conf";
 
+// The Qualcomm ICD is the default on purpose. Turnip ships alongside it and
+// can be selected per app, but it must never become the image default: it is
+// an opt-in driver, and a bad Turnip build would otherwise take Vulkan away
+// from every app at once.
 #ifndef VKSWITCH_DEFAULT_SUBNAME
-#define VKSWITCH_DEFAULT_SUBNAME "freedreno"
+#define VKSWITCH_DEFAULT_SUBNAME "adreno"
 #endif
 
 // Kept as literals: they double as the library suffix (vulkan.<subname>.so)

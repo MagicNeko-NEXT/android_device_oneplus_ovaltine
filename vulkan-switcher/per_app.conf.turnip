@@ -15,8 +15,8 @@
 # Malformed lines, unknown subnames and packages that match nothing are
 # ignored; the driver always falls back to something loadable.
 
-*=freedreno
+*=adreno
 
-# Per-app examples, off by default:
-# com.tungsten.fcl=adreno       # avoid Turnip shader-compile stalls in some FCL versions
+# Turnip is opt-in per app. Uncomment and adjust to move one over:
+# com.tungsten.fcl=freedreno    # Mesa Turnip for the Minecraft launcher
 # gpuservice=adreno             # keep `dumpsys gpu` reporting the OEM ICD

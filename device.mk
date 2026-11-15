@@ -157,10 +157,13 @@ endif
 # Both ICDs always ship, so any app can be moved at runtime by editing the
 # /data file and force-stopping that app -- no rebuild, no reboot, no root.
 #
-# GPU_DRIVER_TURNIP now only picks the *image default*:
-#   true            -> switcher with *=freedreno, the open-source ICD
-#   false (default) -> plain OEM Adreno, no switcher (bring-up)
-GPU_DRIVER_TURNIP ?= false
+# GPU_DRIVER_TURNIP controls whether the open-source ICD and the switcher are
+# installed at all. It does NOT change the image default: the compiled-in
+# default in vulkan_switcher.cpp is "adreno", so every app keeps using the
+# Qualcomm ICD until it is explicitly moved over.
+#   true (default) -> vulkan.freedreno + switcher + VulkanSwitch app
+#   false          -> plain OEM Adreno, no switcher
+GPU_DRIVER_TURNIP ?= true
 
 ifeq ($(GPU_DRIVER_TURNIP),true)
 PRODUCT_PACKAGES += \

@@ -48,10 +48,13 @@ DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += \
     device/oneplus/ovaltine/fingerprint/compatibility_matrix.xml
 
 # Mesa Turnip (freedreno) Vulkan driver switch. Independent from
-# GPU_DRIVER_Q3: Q3 only swaps the Adreno stack, Turnip replaces the Vulkan
-# driver itself with the open-source one.
-# Off by default for bring-up. Enabling it also installs the runtime switcher
-# (vulkan.switcher.so, see device.mk):
-#   GPU_DRIVER_TURNIP=true
-GPU_DRIVER_TURNIP ?= false
+# GPU_DRIVER_Q3: Q3 swaps the whole Adreno userspace stack (GLES/EGL/OpenCL),
+# Turnip only adds the open-source Vulkan ICD and the runtime switcher.
+# Either can be enabled without the other.
+#
+# ON BY DEFAULT: the open-source ICD ships and the switcher is installed, but
+# the Qualcomm ICD stays the image default -- Turnip is opt-in per app through
+# VulkanSwitch or /data/misc/vulkan/per_app.conf. Disable with
+#   GPU_DRIVER_TURNIP=false
+GPU_DRIVER_TURNIP ?= true
 $(call soong_config_set_bool,gpu_oplus,driver_turnip,$(GPU_DRIVER_TURNIP))
