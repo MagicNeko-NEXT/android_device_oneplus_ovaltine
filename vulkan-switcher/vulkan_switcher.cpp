@@ -47,7 +47,7 @@ namespace {
 constexpr char kRwConfPath[] = "/data/misc/vulkan/per_app.conf";
 
 #ifndef VKSWITCH_DEFAULT_SUBNAME
-#define VKSWITCH_DEFAULT_SUBNAME "freedreno"
+#define VKSWITCH_DEFAULT_SUBNAME "adreno"
 #endif
 
 // Kept as literals: they double as the library suffix (vulkan.<subname>.so)
