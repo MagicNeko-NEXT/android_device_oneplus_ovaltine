@@ -111,7 +111,7 @@ PRODUCT_PACKAGES += \
 # Off by default for bring-up. BoardConfig.mk owns the same variable and the
 # two must agree; passing GPU_DRIVER_Q3=true swaps out the OEM graphics modules. The OEM blobs stay untouched either way, so falling back needs no
 # git operations.
-GPU_DRIVER_Q3 ?= true
+GPU_DRIVER_Q3 ?= false
 ifeq ($(GPU_DRIVER_Q3),true)
 GPU_OEM_GRAPHICS_MODULES := \
     eglSubDriverAndroid \
