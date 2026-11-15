@@ -107,39 +107,6 @@ PRODUCT_PACKAGES += \
     ApertureLensLauncher \
     ApertureFrameworksBaseOverlay
 
-# Third-party Adreno graphics stack (Meta Quest 3 V@0837.0.7).
-# Off by default for bring-up. BoardConfig.mk owns the same variable and the
-# two must agree; passing GPU_DRIVER_Q3=true swaps out the OEM graphics modules. The OEM blobs stay untouched either way, so falling back needs no
-# git operations.
-GPU_DRIVER_Q3 ?= false
-ifeq ($(GPU_DRIVER_Q3),true)
-GPU_OEM_GRAPHICS_MODULES := \
-    eglSubDriverAndroid \
-    libEGL_adreno \
-    libGLESv1_CM_adreno \
-    libGLESv2_adreno \
-    libq3dtools_adreno \
-    libq3dtools_esx \
-    libVkLayer_ADRENO_qprofiler \
-    vulkan.adreno \
-    libadreno_app_profiles \
-    libadreno_utils \
-    libCB \
-    libgsl \
-    libkcl \
-    libkernelmanager \
-    libllvm-glnext \
-    libllvm-qcom \
-    libllvm-qgl \
-    libOpenCL \
-    vendor.qti.qspmhal
-
-# The OEM modules must be filtered inside gpu-q3.mk: inherit-product is
-# recorded here and expanded later, so filtering in this file would run
-# before the OEM module list exists.
-$(call inherit-product, vendor/oneplus/sm8450-common/gpu-q3/gpu-q3.mk)
-endif
-
 # Vulkan ICD switching without touching the framework.
 #
 # /vendor/lib64/hw/ carries vulkan.adreno.so (OEM Qualcomm) and
@@ -183,12 +150,6 @@ endif
 # The switcher's image default is compiled in; runtime overrides go to
 # /data/misc/vulkan/per_app.conf.
 
-# The privileged selector app that used to rewrite /data/misc/vulkan/per_app.conf
-# was not carried over into this tree; naming it here would fail the build with
-# an unknown module. Until it lands, use /vendor/bin/vulkan-driver (root shell)
-# or edit the file directly.
-# PRODUCT_PACKAGES += VulkanDriverSwitch
-
 # Fingerprint proxy HAL support.
 # The original OPlus HAL is patched to register as IFingerprint/oplusfp (two
 # instructions in its main(), pointing at a new string in a padding area of
@@ -197,15 +158,3 @@ endif
 # linker never maps the library.
 PRODUCT_PACKAGES += \
     libshims_aidl_fingerprint_v2.oplus
-
-# The proxy is built against fingerprint-V4-ndk because V5 is the unfrozen
-# current version and vendor modules may not depend on it. The framework however
-# is compiled against fingerprint-V5-java, parses SensorProps with the V5 layout
-# and dies with IllegalArgumentException inside BiometricServiceRegistry, which
-# boot-loops system_server. The PJG SensorProps shim only rewrites field values,
-# not the parcel layout, so it cannot paper over the mismatch.
-# Re-enable only once the proxy speaks V5 (freeze aidl_api/.../5 first).
-# AIDL proxy disabled: no longer needed after moving to the upstream HIDL 2.3 service.
-# Source kept in device/oneplus/ovaltine/fingerprint/ for future reference.
-# PRODUCT_PACKAGES += \
-#     android.hardware.biometrics.fingerprint-service.proxy

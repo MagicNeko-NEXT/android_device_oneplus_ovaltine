@@ -32,14 +32,6 @@ TARGET_RECOVERY_UI_MARGIN_HEIGHT := 103
 
 # Include the proprietary files BoardConfig.
 include vendor/oneplus/ovaltine/BoardConfigVendor.mk
-# Third-party Adreno driver selection (Meta Quest 3 V@0837.0.7; the files live
-# in vendor/oneplus/sm8450-common/gpu-q3, wired up by that directory's own
-# gpu-q3.mk).
-# Off by default for bring-up, so a plain build uses the OEM stack. `?=` only
-# assigns when unset, so it can be enabled from the environment with:
-#   GPU_DRIVER_Q3=true
-GPU_DRIVER_Q3 ?= false
-$(call soong_config_set,gpu_oplus,driver_q3,$(GPU_DRIVER_Q3))
 
 # The original fingerprint HAL is renamed to IFingerprint/oplusfp so the proxy
 # HAL can register IFingerprint/default. android.* HALs using a non-standard
