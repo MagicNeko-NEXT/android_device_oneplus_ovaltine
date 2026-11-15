@@ -160,7 +160,7 @@ endif
 # GPU_DRIVER_TURNIP now only picks the *image default*:
 #   true            -> switcher with *=freedreno, the open-source ICD
 #   false (default) -> plain OEM Adreno, no switcher (bring-up)
-GPU_DRIVER_TURNIP ?= false
+GPU_DRIVER_TURNIP ?= true
 
 ifeq ($(GPU_DRIVER_TURNIP),true)
 PRODUCT_PACKAGES += \

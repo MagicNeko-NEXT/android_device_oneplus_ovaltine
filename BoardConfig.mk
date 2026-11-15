@@ -53,5 +53,5 @@ DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += \
 # Off by default for bring-up. Enabling it also installs the runtime switcher
 # (vulkan.switcher.so, see device.mk):
 #   GPU_DRIVER_TURNIP=true
-GPU_DRIVER_TURNIP ?= false
+GPU_DRIVER_TURNIP ?= true
 $(call soong_config_set_bool,gpu_oplus,driver_turnip,$(GPU_DRIVER_TURNIP))
